@@ -9,7 +9,7 @@ const Nav = () => {
   const {data: session} = useSession();
 
   const [providers, setProviders] = useState(null);
-  const [toggleDrppdown, setToggleDropdown] = useState(false);
+  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     const setUpProviders = async () => {
@@ -81,7 +81,7 @@ const Nav = () => {
               onClick={() => setToggleDropdown((prev) => !prev)}
             />
 
-            {toggleDrppdown && (
+            {toggleDropdown && (
               <div className="dropdown">
                 <Link
                   href={"/profile"}
@@ -101,7 +101,7 @@ const Nav = () => {
                   className="black_btn mt-5 w-full"
                   type="button"
                   onClick={() => {
-                    toggleDrppdown(false);
+                    setToggleDropdown(false);
                     signOut();
                   }}
                 >
