@@ -4,26 +4,37 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
   const { data: session } = useSession;
   const pathName = usePathname();
   const router = useRouter();
 
-  const [copied, setCopied] = useState("");
-
-  const handleProfileClick = () => {
-    if (post.creator._id === session?.user.id) return router.push("/profile");
-
-    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
-  };
-
   const [creator, setCreator] = useState({
+    _id: 8888,
     username: "deleted account",
     email: "NA",
     image: "/assets/images/logo.svg",
   });
+
+  const [copied, setCopied] = useState("");
+
+  const handleProfileClick = () => {
+    if (creator._id === session?.user.id) return router.push("/profile");
+    else if (creator._id === 8888)
+      return toast.info("User not found", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+  };
 
   useEffect(() => {
     if (post.creator) {
@@ -43,7 +54,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
       draggable: true,
       progress: undefined,
       theme: "dark",
-      });
+    });
     setTimeout(() => setCopied(""), 3000);
   };
 
@@ -65,9 +76,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
             <h3 className="font-satoshi font-semibold text-gray-900">
               {creator.username}
             </h3>
-            <p className="font-inter text-sm text-gray-500">
-              {creator.email}
-            </p>
+            <p className="font-inter text-sm text-gray-500">{creator.email}</p>
           </div>
         </div>
 

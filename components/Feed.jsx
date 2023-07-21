@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -25,7 +24,6 @@ const Feed = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
-
   const fetchPosts = async () => {
     const response = await fetch("/api/prompt");
     const data = await response.json();
@@ -39,12 +37,17 @@ const Feed = () => {
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i");
-    return allPosts.filter(
-      (item) =>
-        regex.test(item.creator.username) ||
-        regex.test(item.tag) ||
-        regex.test(item.prompt)
-    );
+    return allPosts.filter((item) => {
+      if (item.creator && item.creator.username) {
+        return (
+          regex.test(item.creator.username) ||
+          regex.test(item.tag) ||
+          regex.test(item.prompt)
+        );
+      } else {
+        return regex.test(item.tag) || regex.test(item.prompt);
+      }
+    });
   };
 
   const handleSearchChange = (e) => {
@@ -68,19 +71,22 @@ const Feed = () => {
 
   return (
     <section className="feed">
-      <form className="relative w-full flex-center" onSubmit={(e)=>{
-        e.preventDefault();
-        toast.success(`Showing results for ${searchText}`, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
+      <form
+        className="relative w-full flex-center"
+        onSubmit={(e) => {
+          e.preventDefault();
+          toast.success(`Showing results for ${searchText}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
           });
-        }}>
+        }}
+      >
         <input
           type="text"
           placeholder="search for tag or username"
