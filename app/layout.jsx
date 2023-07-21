@@ -1,10 +1,12 @@
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
 import "@styles/globals.css";
+import { ToastContainer } from "./nexttoast";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: "The Prompt Bazaar",
-  description: "The Prompt Shastra all about the prompts for ai",
+  description: "The Prompt Bazaar all about the prompts for ai",
 };
 
 const RootLayout = ({ children }) => {
@@ -18,6 +20,7 @@ const RootLayout = ({ children }) => {
 
           <main className="app">
             <Nav />
+            <ToastContainer />
             {children}
           </main>
         </Provider>

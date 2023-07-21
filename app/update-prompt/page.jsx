@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Form from "@components/Form";
+import { toast } from 'react-toastify';
 
 const UpdatePrompt = () => {
   const router = useRouter();
@@ -45,8 +46,28 @@ const UpdatePrompt = () => {
       if (response.ok) {
         router.push("/");
       }
+      toast.success('Prompt updated', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     } catch (error) {
       console.log(error);
+      toast.error('Prompt not updated', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     } finally {
       setIsSubmitting(false);
     }

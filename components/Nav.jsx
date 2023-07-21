@@ -85,20 +85,20 @@ const Nav = () => {
               <div className="dropdown">
                 <Link
                   href={"/profile"}
-                  className="dropdown_link"
+                  className="flex-start w-full"
                   onClick={() => setToggleDropdown(false)}
                 >
                   My Profile
                 </Link>
                 <Link
                   href={"/create-prompt"}
-                  className="dropdown_link"
+                  className="flex-start w-full border-b border-gray-400 pb-3"
                   onClick={() => setToggleDropdown(false)}
                 >
                   Create Prompt
                 </Link>
                 <button
-                  className="black_btn mt-5 w-full"
+                  className="black_btn mt-2 w-full"
                   type="button"
                   onClick={() => {
                     setToggleDropdown(false);
