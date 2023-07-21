@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
+import { toast } from 'react-toastify';
+
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -66,7 +68,19 @@ const Feed = () => {
 
   return (
     <section className="feed">
-      <form className="relative w-full flex-center">
+      <form className="relative w-full flex-center" onSubmit={(e)=>{
+        e.preventDefault();
+        toast.success(`Showing results for ${searchText}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        }}>
         <input
           type="text"
           placeholder="search for tag or username"
