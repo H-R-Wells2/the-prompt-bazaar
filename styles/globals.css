@@ -146,10 +146,8 @@
 
 /* Show the dropdown when toggleDropdown is true */
 .dropdown.block {
-  @apply opacity-100
+  @apply opacity-100;
 }
-
-
 
 /* PromptCard Component */
 .prompt_card {

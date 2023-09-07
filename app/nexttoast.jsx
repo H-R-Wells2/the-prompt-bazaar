@@ -1,3 +1,3 @@
 "use client";
 
-export { ToastContainer, toast } from 'react-toastify';
+export { ToastContainer, toast } from "react-toastify";

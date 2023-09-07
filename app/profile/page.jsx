@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import Profile from "@components/Profile";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const MyProfile = () => {
   const router = useRouter();
@@ -42,7 +42,7 @@ const MyProfile = () => {
         const filteredPosts = myPosts.filter((item) => item._id !== post._id);
 
         setMyPosts(filteredPosts);
-        toast.success('Prompt deleted', {
+        toast.success("Prompt deleted", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -51,7 +51,7 @@ const MyProfile = () => {
           draggable: true,
           progress: undefined,
           theme: "dark",
-          });
+        });
       } catch (error) {
         console.log(error);
       }

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 import Form from "@components/Form";
 
@@ -30,7 +30,7 @@ const CreatePrompt = () => {
 
       if (response.ok) {
         router.push("/");
-        toast.success('Prompt added', {
+        toast.success("Prompt added", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -39,11 +39,11 @@ const CreatePrompt = () => {
           draggable: true,
           progress: undefined,
           theme: "dark",
-          });
+        });
       }
     } catch (error) {
       console.log(error);
-      toast.error('Prompt is not added', {
+      toast.error("Prompt is not added", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -52,7 +52,7 @@ const CreatePrompt = () => {
         draggable: true,
         progress: undefined,
         theme: "dark",
-        });
+      });
     } finally {
       setIsSubmitting(false);
     }
