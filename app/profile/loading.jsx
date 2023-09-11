@@ -7,8 +7,9 @@ const Loading = () => {
         src="/assets/icons/loader.svg"
         width={50}
         height={50}
-        alt="loader"
-        className="object-contain"
+        alt="Loading spinner"
+        aria-label="Loading spinner"
+        className="loader-image"
       />
     </div>
   );

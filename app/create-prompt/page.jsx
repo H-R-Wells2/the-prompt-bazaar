@@ -14,6 +14,19 @@ const CreatePrompt = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const [post, setPost] = useState({ prompt: "", tag: "" });
 
+  const showToast = (message, type = "success") => {
+    toast[type](message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
   const createPrompt = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -30,29 +43,13 @@ const CreatePrompt = () => {
 
       if (response.ok) {
         router.push("/");
-        toast.success("Prompt added", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        showToast("Prompt added");
+      } else {
+        showToast("Failed to add prompt", "error");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Prompt is not added", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      console.error(error);
+      showToast("An error occurred while adding the prompt", "error");
     } finally {
       setIsSubmitting(false);
     }
