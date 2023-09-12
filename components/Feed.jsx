@@ -1,72 +1,67 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PromptCard from "./PromptCard";
 import { toast } from "react-toastify";
 
-const PromptCardList = ({ data, handleTagClick }) => {
-  return (
-    <div className="mt-16 prompt_layout">
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
-    </div>
-  );
-};
+const PromptsList = ({ prompts, handleTagClick }) => (
+  <div className="mt-16 prompt_layout">
+    {prompts.map((post) => (
+      <PromptCard key={post._id} post={post} handleTagClick={handleTagClick} />
+    ))}
+  </div>
+);
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [searchTimeout, setSearchTimeout] = useState(null);
-  const [searchedResults, setSearchedResults] = useState([]);
-
-  const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
-    const data = await response.json();
-
-    setAllPosts(data);
-  };
 
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("/api/prompt");
+        const data = await response.json();
+        setAllPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
     fetchPosts();
   }, []);
 
-  const filterPrompts = (searchtext) => {
-    const regex = new RegExp(searchtext, "i");
+  const searchedResults = useMemo(() => {
+    const regex = new RegExp(searchText, "i");
     return allPosts.filter((item) => {
-      if (item.creator && item.creator.username) {
-        return (
-          regex.test(item.creator.username) ||
-          regex.test(item.tag) ||
-          regex.test(item.prompt)
-        );
-      } else {
-        return regex.test(item.tag) || regex.test(item.prompt);
-      }
+      const creatorName = item.creator?.username || "";
+      return (
+        regex.test(creatorName) ||
+        regex.test(item.tag) ||
+        regex.test(item.prompt)
+      );
     });
-  };
+  }, [allPosts, searchText]);
 
   const handleSearchChange = (e) => {
-    clearTimeout(searchTimeout);
-    setSearchText(e.target.value);
+    const newText = e.target.value;
+    setSearchText(newText);
 
-    setSearchTimeout(
-      setTimeout(() => {
-        const searchResult = filterPrompts(e.target.value);
-        setSearchedResults(searchResult);
-      }, 500)
-    );
+    if (newText) {
+      toast.success(`Showing results for ${newText}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
   };
 
   const handleTagClick = (tagName) => {
     setSearchText(tagName);
-
-    const searchResult = filterPrompts(tagName);
-    setSearchedResults(searchResult);
   };
 
   return (
@@ -75,21 +70,11 @@ const Feed = () => {
         className="relative w-full flex-center"
         onSubmit={(e) => {
           e.preventDefault();
-          toast.success(`Showing results for ${searchText}`, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
         }}
       >
         <input
           type="text"
-          placeholder="search for tag or username"
+          placeholder="Search for tag or username"
           value={searchText}
           onChange={handleSearchChange}
           required
@@ -97,14 +82,10 @@ const Feed = () => {
         />
       </form>
 
-      {searchText ? (
-        <PromptCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
-      ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
-      )}
+      <PromptsList
+        prompts={searchText ? searchedResults : allPosts}
+        handleTagClick={handleTagClick}
+      />
     </section>
   );
 };
