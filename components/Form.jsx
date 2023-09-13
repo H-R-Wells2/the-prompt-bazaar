@@ -50,7 +50,9 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             Cancel
           </Link>
           <button
-            className="px-5 py-1.5 text-sm bg-blue-500 rounded-full text-white"
+            className={`px-5 py-1.5 text-sm bg-blue-500 rounded-full text-white ${
+              submitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             type="submit"
             disabled={submitting}
           >
