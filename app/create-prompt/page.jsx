@@ -11,10 +11,9 @@ const CreatePrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [submitting, setIsSubmitting] = useState(false); // Track submission state
-  const [post, setPost] = useState({ prompt: "", tag: "" }); // Post data (prompt and tag)
+  const [submitting, setIsSubmitting] = useState(false);
+  const [post, setPost] = useState({ prompt: "", tag: "" });
 
-  // Show toast notifications
   const showToast = (message, type = "success") => {
     toast[type](message, {
       position: "top-right",
@@ -23,11 +22,11 @@ const CreatePrompt = () => {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
+      progress: undefined,
       theme: "dark",
     });
   };
 
-  // Handle prompt creation
   const createPrompt = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -43,7 +42,7 @@ const CreatePrompt = () => {
       });
 
       if (response.ok) {
-        router.push("/"); // Redirect on success
+        router.push("/");
         showToast("Prompt added");
       } else {
         showToast("Failed to add prompt", "error");
